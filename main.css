@@ -1,0 +1,35 @@
+h1			{
+					border: #000000 thin solid;
+					padding: 0; margin: 0;
+					font-family: arial, helvetica;
+					text-align: center;
+					font-weight: 700; font-size: 100%;
+					color: #770000; 
+					background: #EEEE00;
+				}
+body		{
+					background: #999999;
+				}
+#filebox	{	
+					width: 40%; margin-left: 30%;
+					border: #FFFFFF thin solid;
+					color: #FFFFFF; margin-top: 10%;
+					background: #007700;
+					font-weight: 700; 
+					font-family: arial, helvetica;
+				}
+table 		{
+					width: 100%; border: 0; text-align: left; 	
+				}
+a				{
+					text-decoration: none; color: #FFFFFF;
+				}
+a:active	{
+					text-decoration: none; color: #FFFFFF;
+				}
+a:visited	{
+					text-decoration: none; color: #FFFFFF;
+				}
+p				{
+					text-align: center;
+				}
