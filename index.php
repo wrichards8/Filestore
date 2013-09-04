@@ -7,7 +7,7 @@
 <!DOCTYPE html>
 <html lang="en-GB">
 <head>
-<title>Twisted Media File Store</title>
+<title>File Storage Area</title>
 <link rel= "stylesheet" type= "text/css" href= "main.css">
 </head>
 <body>
