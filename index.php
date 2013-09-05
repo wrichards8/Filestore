@@ -8,7 +8,7 @@
 <html lang="en-GB">
 <head>
 <title>File Storage Area</title>
-<link rel= "stylesheet" type= "text/css" href= "main.css">
+<link rel="stylesheet" type="text/css" href="main.css">
 </head>
 <body>
 <?php $folderscan = dirname(__FILE__); 
@@ -17,7 +17,7 @@ $ignore_files = array(".","..","index.php","main.css");
 /* Since we shall flip the $folder, we need to tell it which values to unset, The easiest way I found was to use an array to store the values */
 $folder = scandir("{$folderscan}/store");
 /* This defines the $folder variable which we use later */
-echo "<h1>File Storage Area</h1>\n";
+echo "<h1><a href=\"#files\" tabindex=\"1\"><img src=\"skip.png\" alt=\"Skip to Folder Contents\"></a>File Storage Area<a href=\"#extra\" tabindex=\"2\"><img src=\"skip.png\" alt=\"Skip to More Information\"></a></h1>\n";
 $folder = array_flip($folder);
 /* This flips the $folder array so we can unset the values */
 foreach ($ignore_files as $i)
@@ -27,6 +27,7 @@ foreach ($ignore_files as $i)
 $folder = array_flip($folder);
 /* We flipped the array earlier, so we need to flip it the right way */
 echo "<div id=\"filebox\">\n";
+echo "<h2><a id=\"files\">Main File Listing</a></h2>\n";
 echo "<table>\n";
 echo "<thead>\n";
 echo "<tr>\n";
@@ -39,29 +40,74 @@ echo "<tbody>\n";
 if(empty($folder)==TRUE)
 {
 	echo "<tr>\n";
-	echo "<td colspan=\"3\"><p>This folder is empty!</p></td>\n";
+	echo "<td colspan=\"3\"><div id=\"cent\">\n<hr>\nThis folder is empty!</div></td>\n";
 	echo "</tr>\n";
 }
 else
 {
-	foreach($folder as $folder)
+	foreach($folder as $key => $furl)
 	{
-		echo "<tr>";
-		$filename = str_replace("_"," ", $folder);
+		echo "<tr>\n";
+		$filename = str_replace("_"," ", $furl);
 		/* Because spaces must be replaced with underscores, we need to replace underscores with spaces */
-		echo "<td><a href=\"{$folder}\">", ucwords($filename) ,"</a></td>\n";
-		/* This sets the URL to the file specified by $folder and capitalizes each word */	
-		echo "<td>" , number_format(filesize($folder) / 1024000,2), "MB</td>\n";
+		$furl = "{$folderscan}/store/{$furl}";
+		echo "<td><a href=\"index.php?file={$key}\">", ucwords($filename) ,"</a></td>\n";
+		/* This sets the URL to the key matching the file specified by $folder and capitalizes each word */	
+		echo "<td>" , number_format(filesize($furl) / 1024000,2), "MB</td>\n";
 		/* This works out the filesize in MB */
-		echo "<td>" , date("d/m/Y, H:i:s", filemtime($folder)), "</td>\n";
+		echo "<td>" , date("d/m/Y, H:i:s", filemtime($furl)), "</td>\n";
 		/* This creates the file modification date */
 		echo "</tr>\n";
 	}
 }	
 /*We do not need to perform a htmlentities check, as we are not allowing users to upload files to our server. We would need to check the filenames, if we did, in case the contain HTML as this would cause problems */
+echo "</tbody>\n";
+echo "</table>\n";
+echo "</div>\n";
+$file = (int)$_GET["file"];
+if(empty($file)==FALSE)
+{
+	echo "<div id=\"extend\">\n";
+	echo "<h2><a id=\"extra\">Extra File Information</a></h2>\n";
+	if(array_key_exists($file, $folder)==FALSE)
+	{
+		echo "<p>This file doesn't exist</p>\n";
+	}
+	else
+	{
+		require_once("getid3/getid3.php");
+		/* This requires the getid3.php class*/
+		$file_url 			= $folder[$file]; 
+		$getID3 			= new getID3;
+		$tags 				= $getID3->analyze("{$folderscan}/store/{$file_url}");
+		$extension		= end(explode(".", $file_url));
+		if($extension== "mp3")
+		{	
+			echo "<table>\n";
+			echo "<tr>\n";
+			echo "<td>Titlw</td>\n";
+			echo "<td>{$tags['tags']['id3v2']['title'][0]}</td>\n";
+			echo "</tr>\n";
+			echo "<tr>\n";
+			echo "<td>Artist</td>\n";
+			echo "<td>{$tags['tags']['id3v2']['artist'][0]}</td>\n";
+			echo "</tr>\n";
+			echo "<tr>\n";
+			echo "<td>Album</td>\n";
+			echo "<td>{$tags['tags']['id3v2']['album'][0]}</td>\n";
+			echo "</tr>\n";
+			echo "<td colspan=\"2\"><audio controls>\n<source src=\"store/{$file_url}\" type=\"audio/mpeg\">\n</audio></td>\n";
+			echo "</tr>\n";
+			echo "</table>\n";
+			/* If the file is an MP3 file, it will be played using HTML5 audio */
+		}
+		else
+		{
+			echo "<p><a href=\"store/{$file_url}\">Download or View</a></p>";
+		}
+	}
+	echo "</div>";
+}
 ?>
-</tbody>
-</table>
-</div>
 </body>
 </html>
