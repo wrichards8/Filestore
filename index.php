@@ -1,11 +1,5 @@
 <?php  require_once("mine.php");
-if(file_exists("store")==FALSE)
-{
-	mkdir("store");
-	/* If the "store" folder isn't found, it will be created */
-}
-?>
-<!DOCTYPE html>
+?><!DOCTYPE html>
 <html lang="en-GB">
 <head>
 <title>File Storage Area</title>
@@ -38,6 +32,7 @@ else
 	{
 		echo "<tr>\n";
 		$filename = str_replace("_"," ", $furl);
+		$filename = substr($filename, 0, -4);
 		/* Because spaces must be replaced with underscores, we need to replace underscores with spaces */
 		$furl = "{$folderscan}/store/{$furl}";
 		echo "<td><a href=\"index.php?file={$key}\">", ucwords($filename) ,"</a></td>\n";

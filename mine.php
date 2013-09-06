@@ -9,10 +9,19 @@ $mine_type = array(
 									);
 /* Please only edit this array */ 
 
+if(file_exists("store")==FALSE)
+{
+	mkdir("store");
+	/* If the "store" folder isn't found, it will be created */
+	
+	file_put_contents("store/.htaccess", "deny from all");
+	/* If there is no .htaccess file, it will be created */
+}
+
 $folderscan = dirname(__FILE__); 
 /* This sets the $folderscan variable to the current folder */
 
-$ignore_files = array(".","..","index.php","main.css"); 
+$ignore_files = array(".", "..", "index.php", "main.css", ".htaccess"); 
 /* Since we shall flip the $folder, we need to tell it which values to unset, The easiest way I found was to use an array to store the values */
 
 $folder = scandir("{$folderscan}/store");
