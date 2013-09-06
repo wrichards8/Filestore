@@ -1,4 +1,4 @@
-<?php  require_once("mine.php");
+<?php  require_once("mime.php");
 ?><!DOCTYPE html>
 <html lang="en-GB">
 <head>
@@ -31,10 +31,11 @@ else
 	foreach($folder as $key => $furl)
 	{
 		echo "<tr>\n";
-		$filename = str_replace("_"," ", $furl);
+		$furl = "store/{$furl}";
+		$filename = str_replace("_", " ", $furl);
 		$filename = substr($filename, 0, -4);
 		/* Because spaces must be replaced with underscores, we need to replace underscores with spaces */
-		$furl = "{$folderscan}/store/{$furl}";
+		$furl = "{$furl}";
 		echo "<td><a href=\"index.php?file={$key}\">", ucwords($filename) ,"</a></td>\n";
 		/* This sets the URL to the key matching the file specified by $folder and capitalizes each word */	
 		echo "<td>" , number_format(filesize($furl) / 1024000,2), "MB</td>\n";
@@ -61,9 +62,9 @@ if(empty($file)==FALSE)
 	{
 		require_once("getid3/getid3.php");
 		/* This requires the getid3.php class*/
-		$file_url 			= $folder[$file]; 
+		$file_url 			= "store/{$folder[$file]}"; 
 		$getID3 			= new getID3;
-		$tags 				= $getID3->analyze("{$folderscan}/store/{$file_url}");
+		$tags 				= $getID3->analyze($file_url);
 		$extension		= end(explode(".", $file_url));
 		if($extension== "mp3")
 		{	
@@ -81,17 +82,17 @@ if(empty($file)==FALSE)
 			echo "<td>{$tags['tags']['id3v2']['album'][0]}</td>\n";
 			echo "</tr>\n";
 			echo "<td>Direct Download</td>\n";
-			echo "<td><a href=\"download.php?id={$key}\">Click Here</a></td>\n";
+			echo "<td><a href=\"/{$file_url}\">Click Here</a></td>\n";
 			echo "<tr>\n";
 			echo "</tr>\n";
-			echo "<td colspan=\"2\"><audio controls>\n<source src=\"store/{$file_url}\" type=\"audio/mpeg\">\n</audio></td>\n";
+			echo "<td colspan=\"2\"><audio controls>\n<source src=\"{$file_url}\" type=\"audio/mpeg\">\n</audio></td>\n";
 			echo "</tr>\n";
 			echo "</table>\n";
 			/* If the file is an MP3 file, it will be played using HTML5 audio */
 		}
 		else
 		{
-			echo "<p><a href=\"store/{$file_url}\">Download or View</a></p>";
+			echo "<p><a href=\"{$file_url}\">Download or View</a></p>";
 		}
 	}
 	echo "</div>";

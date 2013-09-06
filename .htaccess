@@ -1,0 +1,15 @@
+<Files *.*>
+ForceType applicaton/octet-stream
+</Files>
+<Files *.jpeg>
+ForceType image/jpeg
+</Files>
+<Files *.jpg>
+ForceType image/jpeg
+</Files>
+<Files *.pdf>
+ForceType application/pdf
+</Files>
+<Files *.mp3>
+ForceType audio/mpg
+</Files>
