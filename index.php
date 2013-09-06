@@ -1,4 +1,5 @@
-<?php if(file_exists("store")==FALSE)
+<?php  require_once("mine.php");
+if(file_exists("store")==FALSE)
 {
 	mkdir("store");
 	/* If the "store" folder isn't found, it will be created */
@@ -11,21 +12,9 @@
 <link rel="stylesheet" type="text/css" href="main.css">
 </head>
 <body>
-<?php $folderscan = dirname(__FILE__); 
-/* This sets the $folderscan variable to the current folder */
-$ignore_files = array(".","..","index.php","main.css"); 
-/* Since we shall flip the $folder, we need to tell it which values to unset, The easiest way I found was to use an array to store the values */
-$folder = scandir("{$folderscan}/store");
-/* This defines the $folder variable which we use later */
-echo "<h1><a href=\"#files\" tabindex=\"1\"><img src=\"skip.png\" alt=\"Skip to Folder Contents\"></a>File Storage Area<a href=\"#extra\" tabindex=\"2\"><img src=\"skip.png\" alt=\"Skip to More Information\"></a></h1>\n";
-$folder = array_flip($folder);
-/* This flips the $folder array so we can unset the values */
-foreach ($ignore_files as $i)
-{
-	unset($folder[$i]);
-}
-$folder = array_flip($folder);
-/* We flipped the array earlier, so we need to flip it the right way */
+<?php echo "<h1><a href=\"#files\" tabindex=\"1\"><img src=\"skip.png\" alt=\"Skip to Folder Contents\"></a>\n";
+echo "File Storage Area\n";
+echo "<a href=\"#extra\" tabindex=\"2\"><img src=\"skip.png\" alt=\"Skip to More Information\"></a></h1>\n";
 echo "<div id=\"filebox\">\n";
 echo "<h2><a id=\"files\">Main File Listing</a></h2>\n";
 echo "<table>\n";
@@ -95,6 +84,10 @@ if(empty($file)==FALSE)
 			echo "<tr>\n";
 			echo "<td>Album</td>\n";
 			echo "<td>{$tags['tags']['id3v2']['album'][0]}</td>\n";
+			echo "</tr>\n";
+			echo "<td>Direct Download</td>\n";
+			echo "<td><a href=\"download.php?id={$key}\">Click Here</a></td>\n";
+			echo "<tr>\n";
 			echo "</tr>\n";
 			echo "<td colspan=\"2\"><audio controls>\n<source src=\"store/{$file_url}\" type=\"audio/mpeg\">\n</audio></td>\n";
 			echo "</tr>\n";
