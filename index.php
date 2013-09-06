@@ -31,12 +31,13 @@ else
 	foreach($folder as $key => $furl)
 	{
 		echo "<tr>\n";
-		$furl = "store/{$furl}";
-		$filename = str_replace("_", " ", $furl);
-		$filename = substr($filename, 0, -4);
+		$filename 	= str_replace("_", " ", $furl);
+		$filename 	= substr($filename, 0, -4);
+		$furl 			= "store/{$furl}";
+		$filename 	= ucwords($filename);
 		/* Because spaces must be replaced with underscores, we need to replace underscores with spaces */
 		$furl = "{$furl}";
-		echo "<td><a href=\"index.php?file={$key}\">", ucwords($filename) ,"</a></td>\n";
+		echo "<td><a href=\"index.php?file={$key}\">{$filename}</a></td>\n";
 		/* This sets the URL to the key matching the file specified by $folder and capitalizes each word */	
 		echo "<td>" , number_format(filesize($furl) / 1024000,2), "MB</td>\n";
 		/* This works out the filesize in MB */
