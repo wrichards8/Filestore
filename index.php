@@ -21,7 +21,7 @@ foreach ($ignore_files as $i)
 }
 
 $folder = array_flip($folder);
-/* We flipped the array earlier, so we need to flip it the right way */ ?>
+/* We flipped the array earlier, so we need to flip it the right way */
 ?><!DOCTYPE html>
 <html lang="en-GB">
 <head>
