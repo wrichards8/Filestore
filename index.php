@@ -1,12 +1,7 @@
-<?php if(file_exists("store")==FALSE)
-{
-	mkdir("store");
-	/*If the "store" folder does not exist then it will be created dynamically */
-}
-$folder = dirname(__FILE__)."/store"; 
+<?php $folder = dirname(__FILE__); 
 /* This sets the $folderscan variable to the current folder */
 
-$ignore_files = array(".", "..", "index.php", "main.css", ".htaccess"); 
+$ignore_files = array(".", "..", "index.php", "main.css", ".htaccess","skip.png","getid3"); 
 /* Since we shall flip the $folder, we need to tell it which values to unset, The easiest way I found was to use an array to store the values */
 
 $folder = scandir($folder);
@@ -21,7 +16,7 @@ foreach ($ignore_files as $i)
 }
 
 $folder = array_flip($folder);
-/* We flipped the array earlier, so we need to flip it the right way */ ?>
+/* We flipped the array earlier, so we need to flip it the right way */
 ?><!DOCTYPE html>
 <html lang="en-GB">
 <head>
@@ -55,7 +50,6 @@ else
 		echo "<tr>\n";
 		$filename 	= str_replace("_", " ", $furl);
 		$filename 	= substr($filename, 0, -4);
-		$furl 			= "store/{$furl}";
 		$filename 	= ucwords($filename);
 		/* Because spaces must be replaced with underscores, we need to replace underscores with spaces */
 		$furl = "{$furl}";
@@ -85,7 +79,7 @@ if(empty($file)==FALSE)
 	{
 		require_once("getid3/getid3.php");
 		/* This requires the getid3.php class*/
-		$file_url 			= "store/{$folder[$file]}"; 
+		$file_url 			= "{$folder[$file]}"; 
 		$getID3 			= new getID3;
 		$tags 				= $getID3->analyze($file_url);
 		$extension		= end(explode(".", $file_url));
@@ -104,10 +98,11 @@ if(empty($file)==FALSE)
 			echo "<td>Album</td>\n";
 			echo "<td>{$tags['tags']['id3v2']['album'][0]}</td>\n";
 			echo "</tr>\n";
+			echo "<tr>\n";
 			echo "<td>Direct Download</td>\n";
 			echo "<td><a href=\"/{$file_url}\">Click Here</a></td>\n";
-			echo "<tr>\n";
 			echo "</tr>\n";
+			echo "<tr>\n";
 			echo "<td colspan=\"2\"><audio controls>\n<source src=\"{$file_url}\" type=\"audio/mpeg\">\n</audio></td>\n";
 			echo "</tr>\n";
 			echo "</table>\n";

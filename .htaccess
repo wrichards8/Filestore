@@ -1,6 +1,3 @@
-<Files *.*>
-ForceType applicaton/octet-stream
-</Files>
 <Files *.jpeg>
 ForceType image/jpeg
 </Files>
